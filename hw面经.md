@@ -594,10 +594,55 @@ class xxx(metclass=ABSMeta)  # 接口
 ```
 ---------------------------单例模式--------------------------（面试问得多）
 
+单例模式指在内存中仅会创建且仅创建一次对象的设计模式：防止程序中多次使用同一个对象且作用相同时，频繁创建对象而导致内存飙升，单例模式可以让所有需要调用的地方都共享这一个单例
+
+用全局变量也能实现单例，但是这样就会污染命名空间，即这个全局变量的名称，其他地方以后不能用了
+
+        class A(object):
+            xx=None
+            def __new__(cls, *args, **kwargs):
+                if not cls.xx:
+                    cls.xx=super().__new__(cls)
+                return cls.xx    # __new__得返回一个实例，这样init才能拿到这个实例进行初始化
+
+        s1=A()
+        s2=A()
+        print(id(s1))
+        print((id(s2)))
+```
+### 结构型模式
+
+关注类与类之间的协同工作，类组成的结构
+
+复用代码的方法：继承、组合
+
+```
+----------------------适配器模式-----------------------
+
+将一个接口转换为客户希望的另一个接口，使得几个本来不能一起工作的类可以一起
+
+写法一（继承）：类适配器，每个不兼容的类，给他搞个适配器类，转换成新的
+    class newBankPay(Payment,BankPay):                  ---适配器，Payment是原本的接口，BankPay是不兼容的那个
+        def pay(self,money):
+            self.cost(money)
+
+写法二（组合）：对象适配器，在一个类里，放入另一个类的实例对象
+
+    class newpayment(Payment):
+        def __init__(self,payment):
+            self.payment=payment
+
+        def pay(self,money):
+            self.payment.cost(money)
+
+    p=newpayment(BankPay())
+    p.pay(100)
+
+        
+
 
 
 ```
-
 
 ### 六大原则
 
