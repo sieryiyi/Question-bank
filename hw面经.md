@@ -142,6 +142,12 @@ TCP/IP中使用的是IP地址和端口号来确定网络上某一台主机上的
 
       2、基于UDP的应用层协议：DNS（域名系统）、TFTP（简单文件传输协议）、SNMP：简单网络管理协议
 
+### 怎么用 UDP 实现 TCP
+
+https://blog.csdn.net/hcrw01/article/details/113488443?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166065718216780366525024%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=166065718216780366525024&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-3-113488443-null-null.142^v41^new_blog_pos_by_title,185^v2^control&utm_term=UDP%E5%8D%8F%E8%AE%AE%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E6%94%B9%E8%BF%9B%EF%BC%8C%E8%BF%9B%E8%80%8C%E5%8D%87%E7%BA%A7%E6%88%90%E4%B8%BATCP%E5%8D%8F%E8%AE%AE&spm=1018.2226.3001.4187
+
+UDP和TCP的不同在于，UDP是不可靠的、无连接的，要想转换成TCP，需要解决：发送顺序问题，发送丢包问题，流量控制、拥塞控制问题，
+
 ### HTTPS 流程 ☆
 
 ### https 和 http 区别
@@ -379,6 +385,10 @@ TCP/IP中使用的是IP地址和端口号来确定网络上某一台主机上的
 
 ### Python语法糖
 
+### Python内存管理
+
+### Python匿名函数
+
 ### Python创建多线程的几种方法
 
     1、Python提供了一个内置模块 threading.Thread，可以很方便地让我们创建多线程
@@ -502,6 +512,10 @@ set：内容无序，不重复，效率比list高
 
 list：内容有序，可以通过下标访问，元素类型可以不一样，可重复
 
+### 判断图是不是树
+
+如果无向图具有以下性质，则它是树：没有环，图是连通的
+
 
 # MySQL知识
 
@@ -524,6 +538,8 @@ list：内容有序，可以通过下标访问，元素类型可以不一样，�
 https://blog.csdn.net/u010922732/article/details/82992920
 
 ### mysql分库分表怎么处理，如果有大表
+
+### sql注入
 
 ### 联合索引，联合索引对索引顺序有什么要求吗？
 
