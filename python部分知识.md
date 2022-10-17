@@ -223,3 +223,34 @@ print(x._A__name)
 ```
 比如单例模式中：super().__new__(cls)
 ```
+
+### 元类实现单例模式
+
+```
+class mytype(type):
+    def __init__(self,*args,**kwargs):
+        print(args)
+        print(kwargs)
+        self.instance = None
+
+    def __call__(self, *args, **kwargs):
+        if not self.instance:
+            self.instance = self.__new__(self)
+
+        self.__init__(self.instance, *args, **kwargs)  # 这里的empty_obj是foo创建的对象
+
+        return self.instance
+
+
+class foo(object, metaclass=mytype):
+    pass
+
+
+class singleton(foo):
+    # 直接继承用了metaclass的类，可以每次不用写metaclass
+    pass
+
+
+v1 = singleton()
+v2 = singleton()
+```
