@@ -125,7 +125,72 @@ class A(object):
 
 ```
 
-python中的类可以由传统方式（平时写的）和type方法创建（没咋看懂语法）
+python中的类可以由传统方式（平时写的）和type方法创建（没咋看懂语法），默认由type创建，即只要是按传统方法写的，都是底层走type方式（？）
+```
+obj = type("Foo", (object,), {"v1": 123, "func": lambda self: 666})
+
+# 分别表示类名、继承关系、成员
+
+# 等价于
+
+def Foo(object):
+    v1 = 123
+
+    def func(self):
+        return 666
+
+```
+
+当不想默认由type创建时，用元类：元类的作用是指定类由谁来创建
+
+```
+class mytype(type):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print(self)  # <class '__main__.foo'>
+
+    def __new__(cls, *args, **kwargs):
+        # 创建类对象
+
+        print(cls)  # <class '__main__.mytype'>
+
+        new_cls = super().__new__(cls, *args, **kwargs)
+
+        print(new_cls)  # <class '__main__.foo'>
+
+        return new_cls
+
+    def __call__(self, *args, **kwargs):
+        # 1.调用自己的那个类的new方法
+
+        # print(self)  # <class '__main__.foo'>
+
+        empty_obj = self.__new__(self)  # 在正常调用时候，这里的参数应该是类本身cls
+        # 注意，self指的是创建出来的对象，在此时就是foo类
+        # 即self.__new相当于foo.__new
+
+        # 2.调用自己的那个类的init方法
+        self.__init__(empty_obj, *args, **kwargs)  # 这里的empty_obj是foo创建的对象
+        print("empty_obj=" + str(empty_obj))
+        return empty_obj
+
+
+class foo(object, metaclass=mytype):
+    # foo 由mytype创建的，相当于foo是mytype的一个对象
+    # 类中的call方法，会在类创建的实例对象加括号时候被调用
+    # foo相当于一个mytype的对象
+    # 那么当foo()时，相当于mytype这个类的对象加了个括号
+    # 就会去调用mytype的call方法
+
+    def __init__(self, name, *args, **kwargs):
+        # print(self)  # <__main__.foo object at 0x0000026BA383C908>
+        self.name = name
+
+
+v1 = foo("123", "456")
+print(v1)
+print(v1.name)
+```
 
 ### python的单下划线和双下划线
 
