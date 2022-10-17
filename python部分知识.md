@@ -47,7 +47,62 @@ if __name__ == '__main__':
 
 
 ```
-
 ### 装饰器
 
-- 本身是个函数
+- 用于拓展原来函数功能的一种函数，即：在不用更改原函数的代码前提下给函数增加新的功能
+- 装饰器本身也是个函数
+- 特殊之处在于它的返回值也是一个函数
+
+```
+def add(func,*args,**kwargs):
+  def inner(*args,**kwargs):
+    start=time.time()
+    func()
+    end=time.time()
+    return 
+  return inner
+```
+
+单例模式装饰器：
+```
+def single(cls,*args,**kwargs):
+  instance={}
+  def inner(*args,**kwargs):
+    if cls not in instance:
+      instance[cls]=cls(*args,**kwargs)
+    return instance[cls]
+  return inner
+  
+@single
+class A:
+  def __init__(self,x=0,y=0):
+    self.xx=x
+    self.yy=y
+    
+a1=A() 
+a2=A()
+ 
+```
+
+### yield
+
+- 与return类似，都可以返回值
+- 不一样在于，yield可以返回多个值而且可暂停，再次执行可继续下一步操作
+- return到了就停止不在继续运行
+
+### 迭代器类 
+
+可以直接作用于for循环的对象统称为可迭代对象：Iterable
+
+
+- iter：创建迭代器，此方法需要返回对象本身，即：self
+- next：访问迭代器
+
+生成器是特殊的迭代器，包含yield
+
+
+### 可迭代对象
+
+一个类中有iter方法且返回一个迭代器对象，那么这个类创建的对象称为可迭代对象
+
+
