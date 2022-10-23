@@ -330,3 +330,75 @@ gr2 = greenlet.greenlet(func2)
 gr1.switch() # 执行协程1
 
 ```
+
+### 通过yield关键字实现
+
+一般不用，用yield是一种人为伪造的协程
+
+```
+def func1():
+    yield 1  # 包含yield是一种生成器
+    yield from func2()
+    yield 2
+
+
+def func2():
+    yield 3
+    yield 4
+
+
+f1 = func1()
+for i in f1:
+    print(i)
+
+```
+
+### 通过asyncio模块（重点）
+
+官方内置模块，好处：遇到I/O自动切换
+
+```
+@asyncio.coroutine
+def func1():
+    print(1)
+    yield from asyncio.sleep(2)  # 遇到io耗时操作时，自动化切换到task列表中的其他任务
+    print(2)
+
+
+@asyncio.coroutine
+def func2():
+    print(3)
+    yield from asyncio.sleep(2)  # 此处是用asyncio.sleep(2)模拟I/O阻塞
+    print(4)
+
+
+task = [
+    asyncio.ensure_future(func1()),
+    asyncio.ensure_future(func2()]       # 需要运行的函数列表
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(asyncio.wait(task))
+```
+
+### async & await 关键字（推荐用的，更简洁）
+```
+async def func1():
+    print(1)
+    await asyncio.sleep(2)  # 遇到io耗时操作时，自动化切换到task列表中的其他任务
+    print(2)
+
+
+async def func2():
+    print(3)
+    await asyncio.sleep(2)
+    print(4)
+
+
+task = [
+    asyncio.ensure_future(func1()),
+    asyncio.ensure_future(func2())]
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(asyncio.wait(task))
+```
+
